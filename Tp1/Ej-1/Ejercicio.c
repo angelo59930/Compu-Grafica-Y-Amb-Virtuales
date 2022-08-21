@@ -29,7 +29,7 @@ void main(int argc, char** argv)
   glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB); 
   glutInitWindowSize(640,480);
   glutInitWindowPosition(100, 150); 
-  glutCreateWindow("CG Ejemplo"); 
+  glutCreateWindow("Ejercicio-1"); 
   glutDisplayFunc(dibujar);
   iniciar();
   glutMainLoop();

@@ -46,7 +46,7 @@ make
 ---
 El archivo make contiene lo siguiente.
 
-Notar que solo funciona con **archivos de codigo en C**
+Este contenido sirve si quieren **usar unicamente C**
 
 ```bash
 CC=gcc
@@ -54,6 +54,21 @@ CFLAGS=-O2 -g -Wall
 CC=gcc
 LDLIBS= -lGL -lGLU -lglut -lm
 PROGRAMS=$(basename $(wildcard *.c)) 
+all: $(PROGRAMS)
+clean:
+	rm -f $(PROGRAMS) *.o
+new: clean all
+```
+
+Este de aqui sirve para C++
+
+Notar que se utiliza el compilador gpp
+```bash
+CC=gpp
+CFLAGS=-o
+CC=gpp
+LDLIBS= -lGL -lGLU -lglut -lm
+PROGRAMS=$(basename $(wildcard *.cpp)) 
 all: $(PROGRAMS)
 clean:
 	rm -f $(PROGRAMS) *.o
