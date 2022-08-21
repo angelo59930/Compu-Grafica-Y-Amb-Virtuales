@@ -1,6 +1,6 @@
 # Computación grafica y ambientes virtuales 🖼️
 
-Todos los programas realizados en este repositorio, o al menos la mayoria, se encontraran escritos en el lenguaje de programacion **C**.
+Todos los programas realizados en este repositorio, o al menos la mayoria, se encontraran escritos en el lenguaje de programacion **C y C++**.
 
 La libreria grafica que se usara(o se esta usando a dia de hoy en la materia) es OpenGl.
 
@@ -25,14 +25,14 @@ La guia de instalacion y uso de OpenGl en Linux se encuentra al final del README
 - [Tp-2]()
 - ...
 
-### Bibleografia 📚
+### Bibliografia 📚
 - [PDFs](./Material%20Bibleografico/)
 	- [OpenGL y Glut](./Material%20Bibleografico/05_apuntes_opengl.pdf)
 	- [Introduccion a OpenGl](./Material%20Bibleografico/03-2_body-OpenGL.pdf)
 	- [OpenGl:Red Book](./Material%20Bibleografico/04_RedBook.pdf)
 
 ## Guia de uso de OpenGL
-### Linux
+### Instalacion en linux(Ubuntu 22.04/21.04)
 Simplemente se tiene que instalar las siguientes librerias.
 ```bash
 sudo apt-get install libgl1-mesa-dev libglu1-mesa-dev freeglut3-dev
