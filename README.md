@@ -59,7 +59,7 @@ clean:
 	rm -f $(PROGRAMS) *.o
 new: clean all
 ```
-
+---
 Este de aqui sirve para C++
 
 Notar que se utiliza el compilador gpp
