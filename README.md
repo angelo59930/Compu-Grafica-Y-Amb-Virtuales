@@ -12,6 +12,9 @@ La libreria grafica que se usara(o se esta usando a dia de hoy en la materia) es
 
 - En el caso de querer proponer una solucion, o un cambio, realizar un Pull request
 
+## Ejemplo base
+- [Ejemplo Base](./ejemplo_base/ejemplo.cpp)
+
 ## Trabajos practicos
 - [Tp-1](./Tp1)
 - [Tp-2]()

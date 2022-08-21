@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/angelo/Facultad/Quinto/computacion grafica/Compu-Grafica-Y-Amb-Virtuales'
+make: Leaving directory '/home/angelo/Facultad/Quinto/computacion grafica/Compu-Grafica-Y-Amb-Virtuales'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+
