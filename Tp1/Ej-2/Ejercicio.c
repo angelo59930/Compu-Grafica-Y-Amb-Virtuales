@@ -16,7 +16,19 @@ void iniciar(void)
 //<<<<<<<<<<<<<<<<< Dibujado >>>>>>>>>>>>>>>>
 void dibujar(void)
 {
+  // Dibujo de 3 puntos en las posiciones (100,50), (100,130) y (150,130)
   glClear(GL_COLOR_BUFFER_BIT);
+  // Definimos el tamaño de los puntos
+  glPointSize(10);
+  
+  // Empezamos el dibujado de puntos
+  glBegin(GL_POINTS);
+  // Ubicamos los puntos
+  glVertex2d(100, 50);
+  glVertex2d(100, 130);
+  glVertex2d(150, 130);
+  // Terminamos el dibujado de los puntos
+  glEnd();
 
   glFlush();
 }
