@@ -17,16 +17,15 @@ La guia de instalacion y uso de OpenGl en Linux se encuentra al final del README
 
 ## Contenido
 
-### Ejemplo base
+### Ejemplo base 📖
 - [Ejemplo Base](./ejemplo_base/ejemplo.cpp)
 
-### Trabajos practicos
+### Trabajos practicos 📒
 - [Tp-1](./Tp1)
 - [Tp-2]()
 - ...
 
-
-### Bibleografia 
+### Bibleografia 📕
 - [PDFs](./Material%20Bibleografico/)
 	- [OpenGL y Glut](./Material%20Bibleografico/05_apuntes_opengl.pdf)
 	- [Introduccion a OpenGl](./Material%20Bibleografico/03-2_body-OpenGL.pdf)
