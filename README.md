@@ -28,9 +28,9 @@ La guia de instalacion y uso de OpenGl en Linux se encuentra al final del README
 
 ### Bibleografia 
 - [PDFs](./Material%20Bibleografico/)
-	-[OpenGL y Glut](./Material%20Bibleografico/05_apuntes_opengl.pdf)
-	-[Introduccion a OpenGl](./Material%20Bibleografico/03-2_body-OpenGL.pdf)
-	-[OpenGl:Red Book](./Material%20Bibleografico/04_RedBook.pdf)
+	- [OpenGL y Glut](./Material%20Bibleografico/05_apuntes_opengl.pdf)
+	- [Introduccion a OpenGl](./Material%20Bibleografico/03-2_body-OpenGL.pdf)
+	- [OpenGl:Red Book](./Material%20Bibleografico/04_RedBook.pdf)
 
 ## Guia de uso de OpenGL
 ### Linux
