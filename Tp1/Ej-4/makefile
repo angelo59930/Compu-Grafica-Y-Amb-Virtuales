@@ -1,9 +1,9 @@
-CC=gcc
-CFLAGS=-O2 -g -Wall
-CC=gcc
+CC=gpp
+CFLAGS=-o
+CC=gpp
 LDLIBS= -lGL -lGLU -lglut -lm
 
-PROGRAMS=$(basename $(wildcard *.c)) 
+PROGRAMS=$(basename $(wildcard *.cpp)) 
 
 all: $(PROGRAMS)
 

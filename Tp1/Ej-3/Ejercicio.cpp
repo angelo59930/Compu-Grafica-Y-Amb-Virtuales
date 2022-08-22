@@ -72,11 +72,8 @@ void dibujar(void)
 
   Sierpinski(4, T1, T2, T3);
 
-
   glFlush();
 }
-
-
 
 //<<<<<<<<<<<<<<<<<<< main >>>>>>>>>>>>>>>>>>
 int main(int argc, char **argv)
