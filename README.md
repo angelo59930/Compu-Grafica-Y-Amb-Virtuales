@@ -74,7 +74,7 @@ clean:
 	rm -f $(PROGRAMS) *.o
 new: clean all
 ```
-
+---
 ### Instalacion en windows
 Solucion sencilla:
 1) Instalar OpenGl en su computadora(si es de jugar seguramente ya lo tengas)
