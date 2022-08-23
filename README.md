@@ -80,6 +80,3 @@ Solucion sencilla:
 1) Instalar OpenGl en su computadora(si es de jugar seguramente ya lo tengas)
 2) Instalar Zinjai
 3) Crear un nuevo proyecto OpenGl
-
-
-cambio
