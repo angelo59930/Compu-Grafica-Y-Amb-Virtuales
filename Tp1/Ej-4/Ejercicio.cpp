@@ -34,7 +34,6 @@ void dibujar(void)
 {
   double x = 0.0;
 
-  // Malla de Sierpinski
   glClear(GL_COLOR_BUFFER_BIT);
   // Definimos el tamaño de los puntos
   glLineWidth(2);
