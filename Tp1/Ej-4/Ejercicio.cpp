@@ -14,8 +14,9 @@ struct vector2d
   float x, y;
 };
 
-double f(double x){
-  return exp(x) * cos(2 * M_PI * x);
+double f(double x)
+{
+  return exp(-x) * cos(2 * M_PI * x);
 }
 
 //<<<<<<<<<<<<< Inicialización >>>>>>>>>>>>>
@@ -33,36 +34,48 @@ void dibujar(void)
 {
   double x = 0.0;
 
-
   // Malla de Sierpinski
   glClear(GL_COLOR_BUFFER_BIT);
   // Definimos el tamaño de los puntos
   glLineWidth(2);
 
   glBegin(GL_LINE_STRIP);
-  glVertex2d(0, HEIGTH/2);
+  glVertex2d(0, HEIGTH / 2);
   glVertex2d(WIDTH, HEIGTH / 2);
   glEnd();
 
-  while (x <= 4.001)
-  {
-    glPointSize(2);
-    glBegin(GL_POINTS);
-    glVertex2d(x, f(-x) + (HEIGTH / 2));
-    glEnd();
-    x += 0.001;
-  }
-  
-  
+  /*
+   * En eje y -> 1  = 400dpx
+   * En eje y -> 0  = 200dpx
+   * En eje y -> -1 = 0dpx
+   *
+   * En eje x -> 4 = 0dpx
+   * En eje x -> 4 = 400dpx
+   *
+   */
 
-  glFlush();
+  glPointSize(4);
+  glBegin(GL_POINTS);
+  while (x <= 4.0)
+  {
+    double y = f(x) / (1 / (HEIGTH / 2)) + (HEIGTH / 2);
+
+    glVertex2d(x/(4/WIDTH) , y);
+
+    cout << "bucle" << endl;
+
+    x += 0.005;
+  }
+  glEnd();
+
+  glutSwapBuffers();
 }
 
 //<<<<<<<<<<<<<<<<<<< main >>>>>>>>>>>>>>>>>>
 int main(int argc, char **argv)
 {
   glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
   glutInitWindowSize(WIDTH, HEIGTH);
   glutInitWindowPosition(100, 150);
   glutCreateWindow("Ejercicio-4");
