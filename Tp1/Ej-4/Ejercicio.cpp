@@ -4,8 +4,8 @@
 #include <GL/glu.h>
 #include <GL/glut.h>
 
-#define WIDTH 400.0
-#define HEIGTH 400.0
+#define WIDTH 500.0
+#define HEIGTH 500.0
 
 using namespace std;
 
@@ -60,8 +60,6 @@ void dibujar(void)
     double y = f(x) / (1 / (HEIGTH / 2)) + (HEIGTH / 2);
 
     glVertex2d(x/(4/WIDTH) , y);
-
-    cout << "bucle" << endl;
 
     x += 0.005;
   }
