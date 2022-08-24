@@ -27,13 +27,11 @@ void iniciar(void)
 //<<<<<<<<<<<<<<<<< Dibujado >>>>>>>>>>>>>>>>
 void dibujar(void)
 {
-  double x = 0.0;
-
-  
   glClear(GL_COLOR_BUFFER_BIT);
 
+  
 
-  glutSwapBuffers();
+  glFlush();
 }
 
 //<<<<<<<<<<<<<<<<<<< main >>>>>>>>>>>>>>>>>>
@@ -43,10 +41,15 @@ int main(int argc, char **argv)
   glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
   glutInitWindowSize(WIDTH, HEIGTH);
   glutInitWindowPosition(100, 150);
-  glutCreateWindow("Ejercicio-5");
+  glutCreateWindow("Ejercicio-6");
   glutDisplayFunc(dibujar);
   iniciar();
   glutMainLoop();
 
   return 0;
 }
+
+/**
+ * @author Angelo59930
+ *
+ */
