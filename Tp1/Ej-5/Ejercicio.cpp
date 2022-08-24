@@ -71,13 +71,13 @@ void dibujar(void)
 
       glClear(GL_COLOR_BUFFER_BIT);
 
-      glBegin(GL_LINE_STRIP);
-      glLineWidth(3);
+      glBegin(GL_POINTS);
+      glPointSize(2);
 
       glVertex2d(x, y);
 
       glEnd();
-      glFlush();
+      glutSwapBuffers();
     }
   }
 
@@ -88,7 +88,7 @@ void dibujar(void)
 int main(int argc, char **argv)
 {
   glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_SINGLE| GLUT_RGB);
+  glutInitDisplayMode(GLUT_DOUBLE| GLUT_RGB);
   glutInitWindowSize(WIDTH, HEIGTH);
   glutInitWindowPosition(100, 150);
   glutCreateWindow("Ejercicio-5");
@@ -98,3 +98,7 @@ int main(int argc, char **argv)
 
   return 0;
 }
+/**
+ * @author Angelo59930
+ *
+ */

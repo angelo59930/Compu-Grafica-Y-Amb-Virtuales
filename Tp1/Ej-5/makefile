@@ -1,5 +1,5 @@
 CC=gpp
-CFLAGS=-o
+CFLAGS=-o -Wall
 CC=gpp
 LDLIBS= -lGL -lGLU -lglut -lm
 
