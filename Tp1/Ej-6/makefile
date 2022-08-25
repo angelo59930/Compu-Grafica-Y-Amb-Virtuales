@@ -1,6 +1,6 @@
 CC=gpp
-CFLAGS=-o
-CC=gpp
+CFLAGS=-o -Wall
+CC=gpp 
 LDLIBS= -lGL -lGLU -lglut -lm
 
 PROGRAMS=$(basename $(wildcard *.cpp)) 
