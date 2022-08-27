@@ -31,7 +31,7 @@ void Sierpinski(int n, struct vector2d T1, struct vector2d T2, struct vector2d T
                   P3 = {(T2.x + T3.x) / 2, (T2.y + T3.y) / 2};
 
   // Dibujamos el nuevo triangulo
-  glBegin(GL_LINE_LOOP);
+  glBegin(GL_POINTS);
 
   glVertex2d(P1.x, P1.y);
   glVertex2d(P2.x, P2.y);
@@ -51,7 +51,7 @@ void Sierpinski(int n, struct vector2d T1, struct vector2d T2, struct vector2d T
 void makeSierpinski(struct vector2d T1, struct vector2d T2, struct vector2d T3)
 {
   glColor3f(r, g, b);
-  glBegin(GL_LINE_LOOP);
+  glBegin(GL_POINTS);
   glVertex2d(T1.x, T1.y);
   glVertex2d(T2.x, T2.y);
   glVertex2d(T3.x, T3.y);
