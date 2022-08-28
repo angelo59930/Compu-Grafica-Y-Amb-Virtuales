@@ -22,7 +22,7 @@ La guia de instalacion y uso de OpenGl en Linux se encuentra al final del README
 
 ### Trabajos practicos 📒
 - [Tp-1](./Tp1)
-- [Tp-2]()
+- [Tp-2](./Tp2)
 - ...
 
 ### Bibliografia 📚

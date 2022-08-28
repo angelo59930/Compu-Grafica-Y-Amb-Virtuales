@@ -15,7 +15,7 @@ struct vector2d
 };
 
 int r = 0, g = 0, b = 0;
-int BURSH = 5;
+int BURSH = 50;
 //<<<<<<<<<<<<< Inicialización >>>>>>>>>>>>>
 void iniciar(void)
 {
@@ -36,12 +36,19 @@ void dibujar(void)
 
 void mouse(int x, int y)
 {
-
+  glPointSize(BURSH);
+  glBegin(GL_POINTS);
+  glVertex2d(x, abs(y - HEIGTH));
+  glEnd();
+  glFlush();
+/*
   // Generamos la brocha
   GLint posx = x, posy = HEIGTH - y;
   glRecti(posx - (BURSH / 2), posy - (BURSH / 2), posx + BURSH, posy + BURSH);
   glRecti(posx - (BURSH / 2), posy - (BURSH / 2), posx + BURSH, posy + BURSH);
   glFlush();
+
+*/
 }
 
 void keyboard(unsigned char key, int x, int y)

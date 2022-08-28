@@ -73,8 +73,6 @@ void dibujar(void)
 {
 
   glClear(GL_COLOR_BUFFER_BIT);
-  // Definimos el tamaño de los puntos
-  glLineWidth(2);
 
   // Dibujo del triangulo principal
   makeSierpinski(T1, T2, T3);
