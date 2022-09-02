@@ -13,47 +13,98 @@ struct vector2d
   float x, y;
 };
 
-int tmp =0;
+int tmp = 0;
 struct vector2d vector1, vector2;
 
 void paintPoint(vector2d ptm)
 {
-  //glPointSize(10);
+  // glPointSize(10);
   glBegin(GL_POINTS);
   glVertex2d(ptm.x, ptm.y);
   glEnd();
 }
 
-void puntoMedio(vector2d p0, vector2d p1)
+void puntoMedio(vector2d p1, vector2d p2)
 {
-  struct vector2d ptm = {p0.x, p0.y};
+  struct vector2d ptm;
+  float m, t, dx, dy, p;
+  if ((p2.x - p2.y) == 0)
+    m = (p2.y - p1.y);
+  else
+    m = (p2.y - p1.y) / (p2.x - p1.x);
 
-  if (ptm.x > p1.x || ((p0.x == p1.x) && (p0.y > p1.y)))
+  if (fabs(m) < 1)
   {
-    struct vector2d temp = ptm;
-    ptm = p1;
-    p1 = temp;
+    if (p1.x > p2.x)
+    {
+      t = p1.x;
+      p1.x = p2.x;
+      p2.x = t;
+      t = p1.y;
+      p1.y = p2.y;
+      p2.y = t;
+    }
+
+    dx = fabs(p2.x - p1.y);
+    dy = fabs(p2.y - p1.y);
+    p = 2 * dy - dx;
+    ptm.x = p1.x;
+    ptm.y = p1.y;
+
+    while (ptm.x <= p2.x)
+    {
+      paintPoint(ptm);
+      ptm.x++;
+      if (p >= 0)
+      {
+        if (m < 1)
+          ptm.y++;
+        else
+          ptm.y--;
+        p = p + 2 * dy - 2 * dx;
+      }
+      else
+      {
+        p = p + 2 * dy;
+      }
+    }
   }
 
-  int d = 2 * (p1.y - ptm.y) - (p1.x - ptm.x);
-  int incrE = 2 * (p1.y - ptm.y);
-  int incrNE = 2 * ((p1.y - ptm.y) - (p1.x - ptm.x));
-
-  paintPoint(ptm);
-
-  while (ptm.x < p1.x)
+  if (fabs(m) >= 1)
   {
-    if (d <= 0)
+    if (p1.y > p2.y)
     {
-      d = d + incrE;
+      t = p1.x;
+      p1.x = p2.x;
+      p2.x = t;
+      t = p1.y;
+      p1.y = p2.y;
+      p2.y = t;
     }
-    else
+
+    dx = fabs(p2.x - p1.y);
+    dy = fabs(p2.y - p1.y);
+    p = 2 * dy - dx;
+    ptm.x = p1.x;
+    ptm.y = p1.y;
+
+    while (ptm.y <= p2.y)
     {
-      d = d + incrNE;
+      paintPoint(ptm);
       ptm.y++;
+      if (p >= 0)
+      {
+        if (m >= 1)
+          ptm.x++;
+        else
+          ptm.x--;
+        p = p + 2 * dx - 2 * dy;
+      }
+      else
+      {
+        p = p + 2 * dx;
+      }
     }
-    ptm.x++;
-    paintPoint(ptm);
   }
 }
 
@@ -72,32 +123,8 @@ void dibujar(void)
 {
 
   glClear(GL_COLOR_BUFFER_BIT);
-  puntoMedio({2,200}, {100, 300});
+  puntoMedio({2, 200}, {100, 300});
   glFlush();
-}
-
-void mouse(int button, int state, int x, int y)
-{
-
-  if (button == GLUT_LEFT_BUTTON)
-  {
-    if (state == GLUT_DOWN)
-    {
-      switch (tmp)
-      {
-      case 0:
-          vector1 = {(float) x,(float) y};
-          tmp++;
-        break;
-      
-      case 1:
-        vector2 = {(float)x, (float)y};
-        puntoMedio(vector1,vector2);
-        tmp = 0;
-        break;
-      }
-    }
-  }
 }
 
 //<<<<<<<<<<<<<<<<<<< main >>>>>>>>>>>>>>>>>>
@@ -108,7 +135,6 @@ int main(int argc, char **argv)
   glutInitWindowSize(WIDTH, HEIGTH);
   glutInitWindowPosition(100, 150);
   glutCreateWindow("Ejercicio-3");
-  glutMouseFunc(mouse);
   glutDisplayFunc(dibujar);
   iniciar();
   glutMainLoop();
