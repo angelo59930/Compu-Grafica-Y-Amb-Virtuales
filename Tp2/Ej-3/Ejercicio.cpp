@@ -7,15 +7,13 @@
 #define WIDTH 400.0
 #define HEIGTH 400.0
 
-// Vector de 2 dimensiones
-struct vector2d
-{
+struct punto {
   float x, y;
 };
-int click = 0, firstPoint = 0;
-struct vector2d P, Q, noseLlamarlo;
 
-//<<<<<<<<<<<<< Inicialización >>>>>>>>>>>>>
+bool flag = true;
+punto P, Q, puntoTemporal;
+
 void iniciar(void)
 {
   glClearColor(1.0, 1.0, 1.0, 0.0);
@@ -23,193 +21,88 @@ void iniciar(void)
   glColor3f(0.0f, 0.0f, 0.0f);
   glLoadIdentity();
   gluOrtho2D(0.0, WIDTH, 0.0, HEIGTH);
-}
-
-void paintPoint(vector2d ptm)
-{
-  glPointSize(10);
-  glBegin(GL_POINTS);
-  glVertex2d(ptm.x, ptm.y);
-  glEnd();
-}
-/*
-void puntoMedio(vector2d p1, vector2d p2)
-{
-  struct vector2d ptm;
-  float m, t, dx, dy, p;
-  if ((p2.x - p2.y) == 0)
-    m = (p2.y - p1.y);
-  else
-    m = (p2.y - p1.y) / (p2.x - p1.x);
-
-  if (fabs(m) < 1)
-  {
-    if (p1.x > p2.x)
-    {
-      t = p1.x;
-      p1.x = p2.x;
-      p2.x = t;
-      t = p1.y;
-      p1.y = p2.y;
-      p2.y = t;
-    }
-
-    dx = fabs(p2.x - p1.y);
-    dy = fabs(p2.y - p1.y);
-    p = 2 * dy - dx;
-    ptm.x = p1.x;
-    ptm.y = p1.y;
-    glBegin(GL_POINTS);
-    while (ptm.x <= p2.x)
-    {
-      glVertex2d(ptm.x, ptm.y);
-      ptm.x++;
-      if (p >= 0)
-      {
-        if (m < 1)
-          ptm.y++;
-        else
-          ptm.y--;
-        p = p + 2 * dy - 2 * dx;
-      }
-      else
-      {
-        p = p + 2 * dy;
-      }
-    }
-    glEnd();
-  }
-
-  if (fabs(m) >= 1)
-  {
-    if (p1.y > p2.y)
-    {
-      t = p1.x;
-      p1.x = p2.x;
-      p2.x = t;
-      t = p1.y;
-      p1.y = p2.y;
-      p2.y = t;
-    }
-
-    dx = fabs(p2.x - p1.y);
-    dy = fabs(p2.y - p1.y);
-    p = 2 * dx - dy;
-    ptm.x = p1.x;
-    ptm.y = p1.y;
-    glBegin(GL_POINTS);
-    while (ptm.y <= p2.y)
-    {
-      glVertex2d(ptm.x, ptm.y);
-      ptm.y++;
-      if (p >= 0)
-      {
-        if (m >= 1)
-          ptm.x++;
-        else
-          ptm.x--;
-        p = p + 2 * dx - 2 * dy;
-      }
-      else
-      {
-        p = p + 2 * dx;
-      }
-    }
-  }
-  glEnd();
-}*/
-
-void puntoMedio(vector2d p1, vector2d p2)
-{
-  GLfloat M, p, dx, dy, t;
-  vector2d ptm;
-
-  if ((p2.x - p1.x) == 0)
-    M = (p2.y - p1.y);
-  else
-    M = (p2.y - p1.y) / (p2.x - p2.y);
-
-  if (fabs(M) < 1)
-  {
-    if (p1.x > p2.x)
-    {
-      t = p1.x;
-      p1.x = p2.x;
-      p2.x = t;
-
-      t = p1.y;
-      p1.y = p2.y;
-      p2.y = t;
-    }
-
-    dx = fabs(p2.x - p1.x);
-    dy = fabs(p2.y - p1.y);
-
-    p = 2 * dy - dx;
-
-    ptm.x = p1.x;
-    ptm.y = p1.y;
-
-    while (ptm.x <= p2.x)
-    {
-      paintPoint(ptm);
-      ptm.x += 1;
-
-      if (p >= 0)
-      {
-        if (M < 1)
-          ptm.y += 1;
-        else
-          ptm.y -= 1;
-        p = p + 2 * dy - 2 * dx;
-      }
-      else
-        p = p + 2 * dy;
-    }
-  }
-
-  if (fabs(M) >= 1)
-  {
-    if (p1.y > p2.y)
-    {
-      t = p1.x;
-      p1.x = p2.x;
-      p2.x = t;
-
-      t = p1.y;
-      p1.y = p2.y;
-      p2.y = t;
-    }
-
-    dx = fabs(p2.x - p1.x);
-    dy = fabs(p2.y - p1.y);
-
-    p = 2 * dx - dy;
-
-    ptm.x = p1.x;
-    ptm.y = p1.y;
-
-    while (ptm.y <= p2.y)
-    {
-      paintPoint(ptm);
-      ptm.y += 1;
-
-      if (p >= 0)
-      {
-        if (M >= 1)
-          ptm.x += 1;
-        else
-          ptm.x -= 1;
-        p = p + 2 * dx - 2 * dy;
-      }
-      else
-        p = p + 2 * dx;
-    }
-  }
-
+  glClear(GL_COLOR_BUFFER_BIT);
   glFlush();
 }
-void drawRectangle(vector2d P, vector2d Q)
+
+void draw(punto point)
+{
+  glPointSize(3);
+  glBegin(GL_POINTS);
+  glVertex2d(point.x, point.y);
+  glEnd();
+}
+
+void puntoMedio(punto p1, punto p2)
+{
+  GLfloat M, p, dx, dy;
+  punto point, t; 
+
+  if ((p2.x - p1.x) == 0){
+    M = (p2.y - p1.y);
+  }
+  else {
+    M = (p2.y - p1.y) / (p2.x - p2.y);
+  }
+
+  if (fabs(M) < 1) {
+    if (p1.x > p2.x) {
+      t = p1;
+      p1 = p2;
+      p2 = t;
+    }
+
+    dx = fabs(p2.x - p1.x);
+    dy = fabs(p2.y - p1.y);
+
+    p = 2 * dy - dx;
+
+    point.x = p1.x;
+    point.y = p1.y;
+
+    while (point.x <= p2.x) {
+      draw(point);
+      point.x += 1;
+
+      if (p >= 0){
+        point.y = (M < 1) ? point.y += 1 : point.y -= 1;
+        p = p + 2 * dy - 2 * dx; 
+      }else{
+        p = p + 2 * dy;
+      }
+    }
+  }
+
+  if (fabs(M) >= 1) {
+    if (p1.y > p2.y) {
+      t = p1;
+      p1 = p2;
+      p2 = t;
+    }
+
+    dx = fabs(p2.x - p1.x);
+    dy = fabs(p2.y - p1.y);
+
+    p = 2 * dx - dy;
+
+    point.x = p1.x;
+    point.y = p1.y;
+
+    while (point.y <= p2.y){
+      draw(point);
+      point.y += 1;
+
+    if (p >= 0){
+      point.x = (M >= 0) ? point.x += 1 : point.x -= 1;
+      p = p + 2 * dx - 2 * dy; 
+    }else{
+      p = p + 2 * dx;
+    }
+  }
+}
+  glFlush();
+}
+void drawRectangle(punto P, punto Q)
 {
   puntoMedio(P, {P.x, Q.y});
   puntoMedio({P.x, Q.y}, Q);
@@ -217,75 +110,42 @@ void drawRectangle(vector2d P, vector2d Q)
   puntoMedio({Q.x, P.y}, Q);
 }
 
-//<<<<<<<<<<<<<<<<< Dibujado >>>>>>>>>>>>>>>>
-void dibujar(void)
+void passiveMotionFunc(int x, int y)
 {
-
-  glClear(GL_COLOR_BUFFER_BIT);
-
-  glFlush();
-}
-
-void passiveMove(int x, int y)
-{
-  if (firstPoint == 1)
-  {
-    noseLlamarlo.x = x;
-    noseLlamarlo.y = abs(y - HEIGTH);
-
-    vector2d pAUX = {noseLlamarlo.x, noseLlamarlo.y};
-    std::cout << "ptm.x: " << pAUX.x << " ptm.y: " << pAUX.y << std::endl;
+  if (!flag) {
     glClear(GL_COLOR_BUFFER_BIT);
-    drawRectangle(P, pAUX);
+    drawRectangle(P, {float (x), float (abs(y - HEIGTH))});
   }
 }
 
-void mouse(int button, int state, int x, int y)
-{
-  if (button == GLUT_LEFT_BUTTON)
-  {
-    if (state == GLUT_DOWN)
-    {
-      switch (click)
-      {
-      case 0:
-        P.x = x;
-        P.y = abs(y - HEIGTH);
-        std::cout << "P.x: " << P.x << " P.y: " << P.y << std::endl;
-        paintPoint(P);
-        firstPoint = 1;
-        click++;
-        break;
-      case 1:
-        Q.x = x;
-        Q.y = abs(y - HEIGTH);
-        // std::cout << "Q.x: " << Q.x << " Q.y: " << Q.y << std::endl;
+void mouse(int button, int state, int x, int y) {
+  if (button == GLUT_LEFT_BUTTON) {
+    if (state == GLUT_DOWN) {
+
+      if(flag){
+        P = {float (x), float(abs(y - HEIGTH))};
+        draw(P);
+        flag = !flag;
+      }else{
+        Q = {float (x), float(abs(y - HEIGTH))};
         drawRectangle(P, Q);
-        firstPoint = 0;
-        click = 0;
-        break;
+        flag = !flag;
       }
     }
   }
 }
 
-//<<<<<<<<<<<<<<<<<<< main >>>>>>>>>>>>>>>>>>
 int main(int argc, char **argv)
 {
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
   glutInitWindowSize(WIDTH, HEIGTH);
   glutInitWindowPosition(100, 150);
-  glutCreateWindow("Ejercicio-3");
+  glutCreateWindow("Cuadradito");
   glutMouseFunc(mouse);
-  glutPassiveMotionFunc(passiveMove);
-  glutDisplayFunc(dibujar);
+  glutPassiveMotionFunc(passiveMotionFunc);
   iniciar();
   glutMainLoop();
 
   return 0;
 }
-/**
- * @author Angelo59930
- *
- */
