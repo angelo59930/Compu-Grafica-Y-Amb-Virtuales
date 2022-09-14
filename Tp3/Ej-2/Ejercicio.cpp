@@ -156,7 +156,7 @@ void mouse(int button, int state, int x, int y)
     {
       switch (click)
       {
-      case 0:
+      case 0:git push -f32addf128
       
         position[0] = x;
         position[1] = (float)abs(y - HEIGTH);
