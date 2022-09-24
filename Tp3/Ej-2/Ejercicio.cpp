@@ -13,19 +13,19 @@ struct vector2d
   float x, y;
 };
 
+float r,g,b;
+
 float position[] = {0, 0};
 
-// TODO ARREGLAR LA POSICION
-float fix[] = {HEIGTH / 32, HEIGTH / 25};
 
 float normal[4][2] = {{10, 10},
                       {10, 100},
                       {70, 100},
                       {70, 10}};
 
-float italic[2][2] = {
-    {sin(-0.523599), cos(-0.523599)},
-    {cos(-0.523599), -sin(-0.523599)},
+float rotar[2][2] = {
+    {cos(0.523599), -sin(0.523599)},
+    {sin(0.523599), cos(0.523599)},
 };
 
 float resultNormal[4][2];
@@ -38,18 +38,7 @@ void trasladarNormal()
     for (int j = 0; j < 2; j++)
     {
       resultNormal[i][j] = normal[i][j] + position[j];
-    }
-  }
-}
-
-// TODO MOD
-void trasladarRotada()
-{
-  for (int i = 0; i < 4; i++)
-  {
-    for (int j = 0; j < 2; j++)
-    {
-      result[i][j] += position[j] + fix[j];
+      result[i][j] += position[j];
     }
   }
 }
@@ -70,13 +59,13 @@ void multiplicarMarices()
     {
       for (int k = 0; k < 2; k++)
       {
-        result[i][j] += normal[i][k] * italic[k][j];
+        result[i][j] += normal[i][k] * rotar[k][j];
       }
     }
   }
 }
 
-void drawG()
+void drawHouse()
 {
   trasladarNormal();
   glBegin(GL_LINE_LOOP);
@@ -87,11 +76,11 @@ void drawG()
   glEnd();
 }
 
-void cizalla()
+void rotacion()
 {
   multiplicarMarices();
 
-  trasladarRotada();
+  trasladarNormal();
 
   glBegin(GL_LINE_LOOP);
   glVertex2d(result[0][0], result[0][1]);
@@ -128,11 +117,43 @@ void mouse(int button, int state, int x, int y)
       position[0] = x;
       position[1] = (float)abs(y - HEIGTH);
       glClear(GL_COLOR_BUFFER_BIT);
-      drawG();
-      cizalla();
+      drawHouse();
+      rotacion();
       glFlush();
     }
   }
+}
+
+void keyboard(unsigned char key, int x, int y)
+{
+  switch (key)
+  {
+  case '1':
+    r = 0;
+    g = 204;
+    b = 255;
+    glColor3f(r, g, b);
+    glFlush();
+    break;
+  case '2':
+    r = 253;
+    g = 204;
+    b = 0;
+    glColor3f(r, g, b);
+    glFlush();
+    break;
+  case '3':
+    r = 0;
+    g = 0;
+    b = 0;
+    glColor3f(r, g, b);
+    glFlush();
+    break;
+  }
+  glClear(GL_COLOR_BUFFER_BIT);
+  drawHouse();
+  rotacion();
+  glFlush();
 }
 
 //<<<<<<<<<<<<<<<<<<< main >>>>>>>>>>>>>>>>>>
@@ -145,6 +166,7 @@ int main(int argc, char **argv)
   glutInitWindowPosition(100, 150);
   glutCreateWindow("Ejercicio-1");
   glutMouseFunc(mouse);
+  glutKeyboardFunc(keyboard);
   glutDisplayFunc(dibujar);
   iniciar();
   glutMainLoop();

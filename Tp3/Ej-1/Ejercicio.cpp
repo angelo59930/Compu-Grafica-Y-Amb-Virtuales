@@ -35,7 +35,7 @@ float normal[14][2] = {{10, 10},
   (  1/tan(PI/4)     0  )
   (     1            1  )
 */
-float italic[2][2] = {{1 / tan(M_PI / 4), 0},
+float rotar[2][2] = {{1 / tan(M_PI / 4), 0},
                       {1, 1}};
 
 float resultNormal[14][2];
@@ -79,7 +79,7 @@ void multiplicarMarices()
     {
       for (int k = 0; k < 2; k++)
       {
-        result[i][j] += normal[i][k] * italic[k][j];
+        result[i][j] += normal[i][k] * rotar[k][j];
       }
     }
   }
