@@ -25,6 +25,7 @@ La guia de instalacion y uso de OpenGl en Linux se encuentra al final del README
 - [Visualizacion 2D. Tp-2](./Tp2)
 - [Modelo y trasnformacion. Tp-3](./Tp3/)
 	- Nota: El Ej-5 esta a la mitad
+- [Visualizacion 3D. Tp-4](./Tp4/)
 
 ### Bibliografia 📚
 - [PDFs](./Material%20Bibleografico/)
