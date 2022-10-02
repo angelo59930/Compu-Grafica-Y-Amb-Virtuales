@@ -23,7 +23,7 @@ La guia de instalacion y uso de OpenGl en Linux se encuentra al final del README
 ### Trabajos practicos 📒
 - [Introduccion a OpenGL. Tp-1](./Tp1)
 - [Visualizacion 2D. Tp-2](./Tp2)
-- [Modelo y trasnformacion](./Tp3/)
+- [Modelo y trasnformacion. Tp-3](./Tp3/)
 	- Nota: El Ej-5 esta a la mitad
 
 ### Bibliografia 📚
