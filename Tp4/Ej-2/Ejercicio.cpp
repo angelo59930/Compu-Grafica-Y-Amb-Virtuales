@@ -16,14 +16,8 @@ struct vector3d
   float y;
   float z;
 };
-int T = 0;
 
-void rotar(){
-  T++;
-  if(T>360)
-    T=0;
-  glutPostRedisplay();
-}
+vector3d position = {1,1,1};
 
 void draw(vector3d vector, int nVertices)
 {
@@ -42,7 +36,7 @@ void drawFigure()
   int nVertices, nNormales, nSuperficies;
 
   // -- Lectura del archivo .3vn
-  string filename = "basicbar.3vn", line = "";
+  string filename = "prisma.3vn", line = "";
   ifstream file(filename.c_str());
 
   getline(file, line);
@@ -153,17 +147,41 @@ void drawFigure()
 //<<<<<<<<<<<<< Inicialización >>>>>>>>>>>>>
 void iniciar(void)
 {
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
   glClearColor(1.0, 1.0, 1.0, 0.0);
   glColor3f(0.0f, 0.0f, 0.0f);
+  gluPerspective(45, (float)16 / 9, 0.1, 100);
+  glMatrixMode(GL_MODELVIEW);
 }
 
 //<<<<<<<<<<<<<<<<< Dibujado >>>>>>>>>>>>>>>>
 void dibujar(void)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   glLoadIdentity();
-  glRotatef(T, 0, 1, 0);
+  gluLookAt(position.x, position.y, position.z, 0, 0, 0, 0, 1, 0);
+  /*
+    // gluLookAt(1, 1, 1, 0, 0,-1, 0, 1, 0);
+    int widthAngle = -45, heightAngle = 45;
+    glRotatef(heightAngle, 1, 0, 0); // Controla el alto
+    glRotatef(widthAngle, 0, 1, 0);  // Controla lo horizontal
+  */
+  glBegin(GL_LINES);
+  glVertex3d(0, 0, 0);
+  glVertex3d(1, 0, 0);
+  glEnd();
+  glBegin(GL_LINES);
+  glVertex3d(0, 0, 0);
+  glVertex3d(0, 1, 0);
+  glEnd();
+  glBegin(GL_LINES);
+  glVertex3d(0, 0, 0);
+  glVertex3d(0, 0, 1);
+  glEnd();
+
   drawFigure();
 
   glutSwapBuffers();
@@ -176,8 +194,7 @@ int main(int argc, char **argv)
   glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
   glutInitWindowSize(WIDTH, HEIGTH);
   glutInitWindowPosition(100, 150);
-  glutCreateWindow("Ejercicio-1");
-  glutIdleFunc(rotar);
+  glutCreateWindow("Ejercicio-2");
   glutDisplayFunc(dibujar);
   iniciar();
   glutMainLoop();

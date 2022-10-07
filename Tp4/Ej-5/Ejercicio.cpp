@@ -10,20 +10,19 @@
 
 using namespace std;
 
+int CAMERA_VEL = 20;
+
 struct vector3d
 {
   float x;
   float y;
   float z;
 };
-int T = 0;
 
-void rotar(){
-  T++;
-  if(T>360)
-    T=0;
-  glutPostRedisplay();
-}
+
+
+vector3d postion = {2, 1, 2};
+
 
 void draw(vector3d vector, int nVertices)
 {
@@ -36,13 +35,13 @@ void draw(vector3d vector, int nVertices)
   glEnd();
 }
 
-void drawFigure()
+void drawFigure(string nameFile)
 {
 
   int nVertices, nNormales, nSuperficies;
 
   // -- Lectura del archivo .3vn
-  string filename = "basicbar.3vn", line = "";
+  string filename = nameFile, line = "";
   ifstream file(filename.c_str());
 
   getline(file, line);
@@ -119,7 +118,8 @@ void drawFigure()
 
     getline(file, line);
 
-    glBegin(GL_LINE_LOOP);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glBegin(GL_POLYGON);
     // lista de vertices
     cout << "indice: ";
     for (int j = 0; j < verticesSuperficie; j++)
@@ -153,20 +153,68 @@ void drawFigure()
 //<<<<<<<<<<<<< Inicialización >>>>>>>>>>>>>
 void iniciar(void)
 {
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
   glClearColor(1.0, 1.0, 1.0, 0.0);
   glColor3f(0.0f, 0.0f, 0.0f);
+  gluPerspective(45, (float)16 / 9, 0.1, 100);
+  glMatrixMode(GL_MODELVIEW);
 }
 
 //<<<<<<<<<<<<<<<<< Dibujado >>>>>>>>>>>>>>>>
 void dibujar(void)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
   glLoadIdentity();
-  glRotatef(T, 0, 1, 0);
-  drawFigure();
+  gluLookAt(postion.x, postion.y, postion.z, 0, 0, 0, 0, 1, 0);
+  drawFigure("wineglas.3vn");
 
   glutSwapBuffers();
+}
+
+
+
+void keyboard(unsigned char key, int x, int y)
+{
+
+  /**
+   * w -> subir
+   * s -> bajar
+   * a -> rotar izq
+   * d -> rotar der
+   * q -> acercar
+   * e -> alejar
+   */
+
+  switch (key)
+  {
+  case 'w':
+    postion.y += CAMERA_VEL;
+    break;
+
+  case 's':
+    postion.y -= CAMERA_VEL;
+    break;
+
+  case 'a':
+    postion.x += CAMERA_VEL;
+    break;
+
+  case 'd':
+    postion.x -= CAMERA_VEL;
+    break;
+
+  case 'q':
+    postion.z += CAMERA_VEL;
+    break;
+  case 'e':
+    postion.z -= CAMERA_VEL;
+    break;
+  }
+
+  cout << "punto actual: [" << postion.x << ", " << postion.y << ", " << postion.z << "]" << endl;
+  glLoadIdentity();
+  gluLookAt(postion.x, postion.y, postion.z, 0, 0, 0, 0, 1, 0);
 }
 
 //<<<<<<<<<<<<<<<<<<< main >>>>>>>>>>>>>>>>>>
@@ -176,8 +224,8 @@ int main(int argc, char **argv)
   glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
   glutInitWindowSize(WIDTH, HEIGTH);
   glutInitWindowPosition(100, 150);
-  glutCreateWindow("Ejercicio-1");
-  glutIdleFunc(rotar);
+  glutCreateWindow("Ejercicio-5");
+  glutKeyboardFunc(keyboard);
   glutDisplayFunc(dibujar);
   iniciar();
   glutMainLoop();

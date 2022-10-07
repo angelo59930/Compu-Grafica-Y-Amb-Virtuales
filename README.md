@@ -7,6 +7,7 @@ La libreria grafica que se usara(o se esta usando a dia de hoy en la materia) es
 La guia de instalacion y uso de OpenGl en Linux se encuentra al final del README
 
 ## ⚠️ TENER EN CUENTA ⚠️
+
 - Este repositorio servira para tener todos los ejercicios, de cada trabajo practico, de la materia computacion grafica y ambientes virtuales.
 
 - Por el momento el repositorio **esta en construccion**, por lo tanto, no se encontran todos los ejercicios
@@ -18,33 +19,42 @@ La guia de instalacion y uso de OpenGl en Linux se encuentra al final del README
 ## Contenido
 
 ### Ejemplo base 📖
+
 - [Ejemplo Base](./ejemplo_base/ejemplo.cpp)
 
 ### Trabajos practicos 📒
+
 - [Introduccion a OpenGL. Tp-1](./Tp1)
 - [Visualizacion 2D. Tp-2](./Tp2)
 - [Modelo y trasnformacion. Tp-3](./Tp3/)
-	- Nota: El Ej-5 esta a la mitad
+  - Nota: El Ej-5 esta a la mitad
 - [Visualizacion 3D. Tp-4](./Tp4/)
 
 ### Bibliografia 📚
+
 - [PDFs](./Material%20Bibleografico/)
-	- [OpenGL y Glut](./Material%20Bibleografico/05_apuntes_opengl.pdf)
-	- [Introduccion a OpenGl](./Material%20Bibleografico/03-2_body-OpenGL.pdf)
-	- [OpenGl:Red Book](./Material%20Bibleografico/04_RedBook.pdf)
+  - [OpenGL y Glut](./Material%20Bibleografico/05_apuntes_opengl.pdf)
+  - [Introduccion a OpenGl](./Material%20Bibleografico/03-2_body-OpenGL.pdf)
+  - [OpenGl:Red Book](./Material%20Bibleografico/04_RedBook.pdf)
 
 ## Guia de uso de OpenGL
+
 ### Instalacion en linux(Ubuntu 22.04/21.04)
+
 Simplemente se tiene que instalar las siguientes librerias.
+
 ```bash
 sudo apt-get install libgl1-mesa-dev libglu1-mesa-dev freeglut3-dev
 ```
+
 Una vez instaladas las librerias solo tendremos que ejecutar el archivo **make** que se va a encontrar en la misma carpeta que nuestro codigo fuente.
 
 Para ejecutar el archivo solo tendremos que hacer:
+
 ```bash
 make
 ```
+
 ---
 El archivo make contiene lo siguiente.
 
@@ -58,13 +68,15 @@ LDLIBS= -lGL -lGLU -lglut -lm
 PROGRAMS=$(basename $(wildcard *.c)) 
 all: $(PROGRAMS)
 clean:
-	rm -f $(PROGRAMS) *.o
+ rm -f $(PROGRAMS) *.o
 new: clean all
 ```
+
 ---
 Este de aqui sirve para C++
 
 Notar que se utiliza el compilador gpp
+
 ```bash
 CC=gpp
 CFLAGS=-o
@@ -73,12 +85,16 @@ LDLIBS= -lGL -lGLU -lglut -lm
 PROGRAMS=$(basename $(wildcard *.cpp)) 
 all: $(PROGRAMS)
 clean:
-	rm -f $(PROGRAMS) *.o
+ rm -f $(PROGRAMS) *.o
 new: clean all
 ```
+
 ---
+
 ### Instalacion en windows
+
 Solucion sencilla:
+
 1) Instalar OpenGl en su computadora(si es de jugar seguramente ya lo tengas)
 2) Instalar Zinjai
 3) Crear un nuevo proyecto OpenGl

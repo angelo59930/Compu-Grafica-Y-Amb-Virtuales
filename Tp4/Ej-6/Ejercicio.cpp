@@ -10,20 +10,16 @@
 
 using namespace std;
 
+float CAMERA_VEL = 0.25;
+
 struct vector3d
 {
   float x;
   float y;
   float z;
 };
-int T = 0;
 
-void rotar(){
-  T++;
-  if(T>360)
-    T=0;
-  glutPostRedisplay();
-}
+vector3d postion = {7, 2.5, 3.75};
 
 void draw(vector3d vector, int nVertices)
 {
@@ -36,13 +32,13 @@ void draw(vector3d vector, int nVertices)
   glEnd();
 }
 
-void drawFigure()
+void drawFigure(string nameFile, vector3d color)
 {
 
   int nVertices, nNormales, nSuperficies;
 
   // -- Lectura del archivo .3vn
-  string filename = "basicbar.3vn", line = "";
+  string filename = nameFile, line = "";
   ifstream file(filename.c_str());
 
   getline(file, line);
@@ -119,7 +115,10 @@ void drawFigure()
 
     getline(file, line);
 
-    glBegin(GL_LINE_LOOP);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glBegin(GL_POLYGON);
+
+    glColor3d(color.x,color.y,color.z);
     // lista de vertices
     cout << "indice: ";
     for (int j = 0; j < verticesSuperficie; j++)
@@ -128,7 +127,7 @@ void drawFigure()
       line.erase(0, line.find(' ') + 1);
       cout << k << " ";
 
-      glVertex3d(vertices[k].x / 2, vertices[k].y / 2, vertices[k].z / 2);
+      glVertex3d(vertices[k].x , vertices[k].y , vertices[k].z );
     }
     cout << endl;
     glEnd();
@@ -153,20 +152,74 @@ void drawFigure()
 //<<<<<<<<<<<<< Inicialización >>>>>>>>>>>>>
 void iniciar(void)
 {
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
   glClearColor(1.0, 1.0, 1.0, 0.0);
   glColor3f(0.0f, 0.0f, 0.0f);
+  gluPerspective(45, (float)16 / 9, 0.1, 100);
+  glMatrixMode(GL_MODELVIEW);
 }
 
 //<<<<<<<<<<<<<<<<< Dibujado >>>>>>>>>>>>>>>>
 void dibujar(void)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
   glLoadIdentity();
-  glRotatef(T, 0, 1, 0);
-  drawFigure();
+  gluLookAt(postion.x, postion.y, postion.z, 0, 0, 0, 0, 1, 0);
+  drawFigure("pared_1.3vn", {0.8, 0.8, 0.45});
+  drawFigure("pared_2.3vn", {0.8, 0.8, 0.45});
+  drawFigure("piso.3vn", {0.8, 0.8, 0.2});
+  drawFigure("mesa.3vn", {0.5, 0.2, 0.1});
+  drawFigure("silla.3vn",{0.5,0,0.5});
+  drawFigure("pelota.3vn",{1/255,1,1});
+
 
   glutSwapBuffers();
+}
+
+
+
+void keyboard(unsigned char key, int x, int y)
+{
+
+  /**
+   * w -> subir
+   * s -> bajar
+   * a -> rotar izq
+   * d -> rotar der
+   * q -> acercar
+   * e -> alejar
+   */
+
+  switch (key)
+  {
+  case 'w':
+    postion.y += CAMERA_VEL;
+    break;
+
+  case 's':
+    postion.y -= CAMERA_VEL;
+    break;
+
+  case 'a':
+    postion.x += CAMERA_VEL;
+    break;
+
+  case 'd':
+    postion.x -= CAMERA_VEL;
+    break;
+
+  case 'q':
+    postion.z += CAMERA_VEL;
+    break;
+  case 'e':
+    postion.z -= CAMERA_VEL;
+    break;
+  }
+
+  cout << "punto actual: [" << postion.x << ", " << postion.y << ", " << postion.z << "]" << endl;
+
+  glutPostRedisplay();
 }
 
 //<<<<<<<<<<<<<<<<<<< main >>>>>>>>>>>>>>>>>>
@@ -176,8 +229,8 @@ int main(int argc, char **argv)
   glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
   glutInitWindowSize(WIDTH, HEIGTH);
   glutInitWindowPosition(100, 150);
-  glutCreateWindow("Ejercicio-1");
-  glutIdleFunc(rotar);
+  glutCreateWindow("Ejercicio-5");
+  glutKeyboardFunc(keyboard);
   glutDisplayFunc(dibujar);
   iniciar();
   glutMainLoop();
