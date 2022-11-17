@@ -9,7 +9,7 @@
 #define HEIGTH 600.0
 
 using namespace std;
-
+float CAMERA_VEL = 0.25;
 struct vector3d
 {
   float x;
@@ -17,18 +17,23 @@ struct vector3d
   float z;
 };
 
-void draw(vector3d vector, int nVertices)
+vector3d postion = {22, 5, 22};
+
+void draw(vector3d *vector, int nVertices, float angulo)
 {
 
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   glBegin(GL_POLYGON);
 
-  for (int i = 0; i < nVertices; i++)
-    glVertex3d(vector.x, vector.y, vector.z);
+  for(int i = 0; i < nVertices; i++){
+    cout << "punto actual: [" << vector[i].x << ", " << vector[i].y << ", " << vector[i].z << "]" << endl;
 
-  glEnd();
+    glVertex3d(vector[i].x * 2, (vector[i].y - 4.8) * 2, 0);
+  }
+
 }
 
-void drawFigure(int angulo)
+void readFile(int angulo)
 {
   vector3d actualPoint = {0, 0, 0};
 
@@ -41,25 +46,21 @@ void drawFigure(int angulo)
 
   cout << "puntos: " << points << endl;
 
-  glRotatef(angulo, 0, 1, 0);
+  vector3d tajLine[points];
 
-  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  glBegin(GL_POLYGON);
   for (int i = 0; i < points; i++)
   {
     getline(file, line);
 
     actualPoint.y = stof(line.substr(0, line.find(' ')));
     actualPoint.x = stof(line.substr(line.find(' '), line.length()));
-    
-    cout << "punto actual: [" << actualPoint.x << ", " << actualPoint.y << ", " << actualPoint.z << "]" << endl;
 
-    // dibujado
-    glVertex3d(actualPoint.x * 2, (actualPoint.y - 4.8)*2, 0);
+    //cout << "punto actual: [" << actualPoint.x << ", " << actualPoint.y << ", " << actualPoint.z << "]" << endl;
+
+    tajLine[i] = actualPoint;
   }
-  glEnd();
 
-
+  draw(tajLine,points, angulo);
 
   file.close();
   // -- fin de lectura del archivo .3vn
@@ -80,9 +81,8 @@ void iniciar(void)
 void dibujar(void)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
   glLoadIdentity();
-  gluLookAt(22, 5,22, 0, 0, 0, 0, 1, 0);
+  gluLookAt(postion.x, postion.y, postion.z, 0, 0, 0, 0, 1, 0);
 
   glBegin(GL_LINES);
   glVertex3d(0, 0, 0);
@@ -97,11 +97,53 @@ void dibujar(void)
   glVertex3d(0, 0, 400);
   glEnd();
 
-
-  for(int i = 0; i <= 360; i++)
-    drawFigure(i);
+  for (int i = 0; i <= 360; i += 25)
+    readFile(i);
 
   glutSwapBuffers();
+}
+
+void keyboard(unsigned char key, int x, int y)
+{
+
+  /**
+   * w -> subir
+   * s -> bajar
+   * a -> rotar izq
+   * d -> rotar der
+   * q -> acercar
+   * e -> alejar
+   */
+
+  switch (key)
+  {
+  case 'w':
+    postion.y += CAMERA_VEL;
+    break;
+
+  case 's':
+    postion.y -= CAMERA_VEL;
+    break;
+
+  case 'a':
+    postion.x += CAMERA_VEL;
+    break;
+
+  case 'd':
+    postion.x -= CAMERA_VEL;
+    break;
+
+  case 'q':
+    postion.z += CAMERA_VEL;
+    break;
+  case 'e':
+    postion.z -= CAMERA_VEL;
+    break;
+  }
+
+  cout << "punto actual: [" << postion.x << ", " << postion.y << ", " << postion.z << "]" << endl;
+
+  glutPostRedisplay();
 }
 
 //<<<<<<<<<<<<<<<<<<< main >>>>>>>>>>>>>>>>>>
@@ -111,8 +153,9 @@ int main(int argc, char **argv)
   glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
   glutInitWindowSize(WIDTH, HEIGTH);
   glutInitWindowPosition(100, 150);
-  glutCreateWindow("Ejercicio-1");
+  glutCreateWindow("Ejercicio-4");
   glutDisplayFunc(dibujar);
+  glutKeyboardFunc(keyboard);
   iniciar();
   glutMainLoop();
 

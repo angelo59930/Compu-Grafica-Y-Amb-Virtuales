@@ -115,10 +115,10 @@ void drawFigure(string nameFile, vector3d color)
 
     getline(file, line);
 
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glBegin(GL_POLYGON);
 
-    glColor3d(color.x,color.y,color.z);
+    glColor3d(color.x, color.y, color.z);
     // lista de vertices
     cout << "indice: ";
     for (int j = 0; j < verticesSuperficie; j++)
@@ -127,7 +127,7 @@ void drawFigure(string nameFile, vector3d color)
       line.erase(0, line.find(' ') + 1);
       cout << k << " ";
 
-      glVertex3d(vertices[k].x , vertices[k].y , vertices[k].z );
+      glVertex3d(vertices[k].x, vertices[k].y, vertices[k].z);
     }
     cout << endl;
     glEnd();
@@ -164,31 +164,20 @@ void iniciar(void)
 void dibujar(void)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glEnable(GL_DEPTH_TEST);
   glLoadIdentity();
   gluLookAt(postion.x, postion.y, postion.z, 0, 0, 0, 0, 1, 0);
   drawFigure("pared_1.3vn", {0.8, 0.8, 0.45});
   drawFigure("pared_2.3vn", {0.8, 0.8, 0.45});
   drawFigure("piso.3vn", {0.8, 0.8, 0.2});
   drawFigure("mesa.3vn", {0.5, 0.2, 0.1});
-  drawFigure("silla.3vn",{0.5,0,0.5});
-  drawFigure("pelota.3vn",{1/255,1,1});
-
-
+  drawFigure("silla.3vn", {0.5, 0, 0.5});
+  drawFigure("pelota.3vn", {1 / 255, 1, 1});
   glutSwapBuffers();
 }
 
 void keyboard(unsigned char key, int x, int y)
 {
-
-  /**
-   * w -> subir
-   * s -> bajar
-   * a -> rotar izq
-   * d -> rotar der
-   * q -> acercar
-   * e -> alejar
-   */
-
   switch (key)
   {
   case 'w':
@@ -224,7 +213,8 @@ void keyboard(unsigned char key, int x, int y)
 int main(int argc, char **argv)
 {
   glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
   glutInitWindowSize(WIDTH, HEIGTH);
   glutInitWindowPosition(100, 150);
   glutCreateWindow("Ejercicio-5");

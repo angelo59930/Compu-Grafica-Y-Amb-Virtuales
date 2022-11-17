@@ -5,12 +5,9 @@
 #include <GL/glut.h>
 #include <cmath>
 
-#define WIDTH 600.0
-#define HEIGTH 600.0
+float CAMERA_VEL = 0.25;
 
 using namespace std;
-
-float CAMERA_VEL = 0.25;
 
 struct vector3d
 {
@@ -19,20 +16,48 @@ struct vector3d
   float z;
 };
 
-vector3d postion = {7, 2.5, 3.75};
+int aux = 0, figure = 0;
 
-void draw(vector3d vector, int nVertices)
-{
+vector3d postion = {2, -2, 1};
 
-  glBegin(GL_POLYGON);
+vector3d ambiental[9] = {
+    {0, 0, 0},
+    {0.3, 0.2, 0.02},
+    {0.2, 0.1, 0.05},
+    {0.25, 0.25, 0.25},
+    {0.19, 0.07, 0.02},
+    {0.24, 0.19, 0.7},
+    {0.10, 0.05, 0.1},
+    {0.19, 0.19, 0.19},
+    {0.23, 0.23, 0.23}};
 
-  for (int i = 0; i < nVertices; i++)
-    glVertex3d(vector.x, vector.y, vector.z);
+vector3d difusa[9] = {
+    {0.01, 0.01, 0.01},
+    {0.78, 0.56, 0.11},
+    {0.71, 0.42, 0.18},
+    {0.4, 0.4, 0.4},
+    {0.70, 0.27, 0.08},
+    {0.7, 0.60, 0.22},
+    {0.42, 0.47, 0.54},
+    {0.50, 0.50, 0.50},
+    {0.27, 0.27, 0.27}};
 
-  glEnd();
-}
+vector3d specular[9] = {
+    {0.5, 0.5, 0.5},
+    {0.99, 0.94, 0.80},
+    {0.39, 0.27, 0.16},
+    {0.77, 0.77, 0.77},
+    {0.25, 0.13, 0.08},
+    {0.6, 0.55, 0.36},
+    {0.33, 0.33, 0.52},
+    {0.50, 0.50, 0.50},
+    {0.77, 0.77, 0.77}};
 
-void drawFigure(string nameFile, vector3d color)
+float brillo[9] = {32, 27.8, 25.6, 76.8, 12.8, 51.2, 9.8, 51.2, 89.6};
+
+int material = 0;
+
+void drawFigure(string nameFile)
 {
 
   int nVertices, nNormales, nSuperficies;
@@ -47,9 +72,7 @@ void drawFigure(string nameFile, vector3d color)
   nVertices = stoi(line.substr(0, line.find(' ')));
   nNormales = stoi(line.substr(line.find(' '), line.rfind(' ')));
   nSuperficies = stoi(line.substr(line.rfind(' '), line.length()));
-  cout << "N vertices: " << nVertices << endl;
-  cout << "N normales: " << nNormales << endl;
-  cout << "N superficies: " << nSuperficies << endl;
+
   getline(file, line);
 
   /*-------------------------------------------*/
@@ -73,15 +96,6 @@ void drawFigure(string nameFile, vector3d color)
     getline(file, line);
   }
 
-  // imprimimos el arreglo de vertices
-  cout << "Arreglo de vertices: [ ";
-  for (int i = 0; i < nVertices; i++)
-  {
-    cout << "(" << vertices[i].x << "," << vertices[i].y << "," << vertices[i].z << ")"
-         << " ";
-  }
-  cout << "]" << endl;
-
   /*------------------------------------------*/
 
   // rellenamos el arreglo de normales
@@ -93,18 +107,6 @@ void drawFigure(string nameFile, vector3d color)
     getline(file, line);
   }
 
-  // imprimimos el arreglo de normales
-  cout << "Arreglo de normales: [ ";
-  for (int i = 0; i < nNormales; i++)
-  {
-    cout << "(" << normales[i].x << "," << normales[i].y << "," << normales[i].z << ")"
-         << " ";
-  }
-  cout << "]" << endl;
-
-  /*-------------------------------------------*/
-  /*-------------------------------------------*/
-
   /*-------------------------------------------*/
   /*----------CREACION DE SUPERFICIES----------*/
   /*-------------------------------------------*/
@@ -115,21 +117,16 @@ void drawFigure(string nameFile, vector3d color)
 
     getline(file, line);
 
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glBegin(GL_POLYGON);
-
-    glColor3d(color.x,color.y,color.z);
     // lista de vertices
-    cout << "indice: ";
     for (int j = 0; j < verticesSuperficie; j++)
     {
       int k = stoi(line.substr(0, line.find(' ')));
       line.erase(0, line.find(' ') + 1);
-      cout << k << " ";
 
-      glVertex3d(vertices[k].x , vertices[k].y , vertices[k].z );
+      glVertex3d(vertices[k].x, vertices[k].y, vertices[k].z);
     }
-    cout << endl;
     glEnd();
 
     getline(file, line);
@@ -138,6 +135,9 @@ void drawFigure(string nameFile, vector3d color)
     // lista de normales
     for (int j = 0; j < verticesSuperficie; j++)
     {
+      int k = stoi(line.substr(0, line.find(' ')));
+      line.erase(0, line.find(' ') + 1);
+      glNormal3d(normales[k].x, normales[k].y, normales[k].z);
     }
     getline(file, line);
   }
@@ -149,46 +149,59 @@ void drawFigure(string nameFile, vector3d color)
   // -- fin de lectura del archivo .3vn
 }
 
-//<<<<<<<<<<<<< Inicialización >>>>>>>>>>>>>
-void iniciar(void)
+void init(void)
 {
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  glClearColor(1.0, 1.0, 1.0, 0.0);
+  GLfloat mat_specular[] = {1.0, 1.0, 1.0, 1.0};
+  GLfloat mat_shininess[] = {10.0};
+  GLfloat light_position[] = {1.0, 1.0, 1.0, 0.0};
+  glClearColor(0.0, 0.0, 0.0, 0.0);
+  glShadeModel(GL_SMOOTH);
+  glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+  glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+  glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT0);
+  glEnable(GL_DEPTH_TEST);
+
+  glOrtho(0.0, 500.0, 0.0, 500.0, -100, 100);
+
   glColor3f(0.0f, 0.0f, 0.0f);
-  gluPerspective(45, (float)16 / 9, 0.1, 100);
+  glLoadIdentity();
   glMatrixMode(GL_MODELVIEW);
 }
-
-//<<<<<<<<<<<<<<<<< Dibujado >>>>>>>>>>>>>>>>
-void dibujar(void)
+void display(void)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
+  glEnable(GL_DEPTH_TEST);
+  glLoadIdentity();
+
+  gluPerspective(50, 1, 3, 20);
   gluLookAt(postion.x, postion.y, postion.z, 0, 0, 0, 0, 1, 0);
-  drawFigure("pared_1.3vn", {0.8, 0.8, 0.45});
-  drawFigure("pared_2.3vn", {0.8, 0.8, 0.45});
-  drawFigure("piso.3vn", {0.8, 0.8, 0.2});
-  drawFigure("mesa.3vn", {0.5, 0.2, 0.1});
-  drawFigure("silla.3vn",{0.5,0,0.5});
-  drawFigure("pelota.3vn",{1/255,1,1});
 
+  drawFigure("pared_1.3vn");
+  drawFigure("pared_2.3vn");
+  drawFigure("piso.3vn");
 
-  glutSwapBuffers();
+  glFlush();
+}
+void reshape(int w, int h)
+{
+  glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  if (w <= h)
+    glOrtho(-1.5, 1.5, -1.5 * (GLfloat)h / (GLfloat)w,
+            1.5 * (GLfloat)h / (GLfloat)w, -10.0, 10.0);
+  else
+    glOrtho(-1.5 * (GLfloat)w / (GLfloat)h,
+            1.5 * (GLfloat)w / (GLfloat)h, -1.5, 1.5, -10.0, 10.0);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
 }
 
 void keyboard(unsigned char key, int x, int y)
 {
-
-  /**
-   * w -> subir
-   * s -> bajar
-   * a -> rotar izq
-   * d -> rotar der
-   * q -> acercar
-   * e -> alejar
-   */
-
   switch (key)
   {
   case 'w':
@@ -213,29 +226,45 @@ void keyboard(unsigned char key, int x, int y)
   case 'e':
     postion.z -= CAMERA_VEL;
     break;
-  }
 
-  cout << "punto actual: [" << postion.x << ", " << postion.y << ", " << postion.z << "]" << endl;
+  case 'x':
+    figure++;
+    if (figure > 2)
+      figure = 0;
+    break;
+
+  case 'z':
+    GLfloat mat_ambient[] = {ambiental[aux].x, ambiental[aux].y, ambiental[aux].z, 1.0};
+    GLfloat mat_diffuse[] = {difusa[aux].x, difusa[aux].y, difusa[aux].z, 1.0};
+    GLfloat mat_specular[] = {specular[aux].x, specular[aux].y, specular[aux].z, 1.0};
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT, mat_specular);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_specular);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialf(GL_FRONT, GL_SHININESS, brillo[aux]);
+
+    aux++;
+
+    if (aux > 8)
+      aux = 0;
+
+    break;
+  }
 
   glutPostRedisplay();
 }
 
-//<<<<<<<<<<<<<<<<<<< main >>>>>>>>>>>>>>>>>>
 int main(int argc, char **argv)
 {
   glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
-  glutInitWindowSize(WIDTH, HEIGTH);
-  glutInitWindowPosition(100, 150);
-  glutCreateWindow("Ejercicio-5");
+  glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+  glutInitWindowSize(500, 500);
+  glutInitWindowPosition(100, 100);
+  glutCreateWindow(argv[0]);
+  init();
   glutKeyboardFunc(keyboard);
-  glutDisplayFunc(dibujar);
-  iniciar();
+  glutDisplayFunc(display);
+  glutReshapeFunc(reshape);
   glutMainLoop();
-
   return 0;
 }
-/**
- * @author Angelo59930
- *
- */
